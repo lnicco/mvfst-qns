@@ -12,6 +12,6 @@ if [ "$ROLE" == "client" ]; then
 
 elif [ "$ROLE" == "server" ]; then
     echo "Running QUIC server on 0.0.0.0:4433"
-    mdkir /logs
+    mkdir /logs
     ${HQ_CLI} --mode=server --port=4433 --h2port=4434 --use_draft=true --draft-version=22 --logdir=/logs --host=0.0.0.0 --v=0 "$@"
 fi
