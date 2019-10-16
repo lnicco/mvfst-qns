@@ -4,7 +4,7 @@ FROM martenseemann/quic-network-simulator-endpoint:latest
 RUN apt-get --yes update
 RUN apt-get install --yes git sudo
 RUN git clone https://github.com/facebook/proxygen.git
-RUN cd proxygen/proxygen && ./build.sh -q
+RUN cd proxygen/proxygen && ./build.sh -q -t
 
 # copy run script and run it
 COPY run_endpoint.sh .
