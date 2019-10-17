@@ -1,8 +1,8 @@
 FROM martenseemann/quic-network-simulator-endpoint:latest
 
 # Get and build proxygen with HTTP/3 support
-RUN apt-get --yes update
-RUN apt-get install --yes git sudo
+RUN apt-get --yes --fix-missing update
+RUN apt-get install --yes git sudo cmake
 RUN git clone https://github.com/facebook/proxygen.git
 RUN cd proxygen/proxygen && ./build.sh -q -t
 
