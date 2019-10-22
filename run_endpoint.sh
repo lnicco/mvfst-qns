@@ -12,7 +12,7 @@ LOGLEVEL=2
 /setup.sh
 
 # Unless noted otherwise, test cases use HTTP/0.9 for file transfers.
-PROTOCOL="hq-${DARFT}"
+PROTOCOL="hq-${DRAFT}"
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
         "handshake") ;;
