@@ -32,7 +32,8 @@ if [ ! -z "${TESTCASE}" ]; then
 fi
 
 if [ "${ROLE}" == "client" ]; then
-    sleep 10
+    # Wait for the simulator to start up.
+    /wait-for-it.sh sim:57832 -s -t 10
     echo "Starting QUIC client..."
     if [ ! -z "${REQUESTS}" ]; then
         FILES=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }' | paste -sd',')
