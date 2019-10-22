@@ -8,16 +8,25 @@ PORT=443
 
 LOGLEVEL=0
 
+# Unless noted otherwise, test cases use HTTP/0.9 for file transfers.
+PROTOCOL="hq-23"
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
-        "handshake"|"transfer"|"retry"|"throughput") ;;
-        "resumption"|"http3") ;;
-        *) exit 127 ;;
+        "handshake") ;;
+        "transfer") ;;
+        "retry")
+            exit 127
+            ;;
+        "throughput") ;;
+        "resumption") ;;
+        "http3")
+             PROTOCOL="h3-23"
+             ;;
+        *)
+            exit 127
+            ;;
     esac
 fi
-
-mkdir -p /logs/client
-mkdir -p /logs/server
 
 if [ "${ROLE}" == "client" ]; then
     sleep 10
@@ -29,11 +38,12 @@ if [ "${ROLE}" == "client" ]; then
             --mode=client \
             --host=server \
             --port=${PORT} \
+            --protocol=${PROTOCOL} \
             --path="${FILES}" \
             --conn_flow_control=107374182 \
             --stream_flow_control=107374182 \
             --outdir=/downloads \
-            --logdir=/logs/client \
+            --logdir=/logs \
             --v=${LOGLEVEL}
     fi
 
@@ -43,7 +53,8 @@ elif [ "$ROLE" == "server" ]; then
         --mode=server \
         --port=${PORT} \
         --h2port=${PORT} \
-        --logdir=/logs/server \
+        --protocol=${PROTOCOL} \
+        --logdir=/logs \
         --host=server \
         --v=${LOGLEVEL}
 fi
