@@ -8,5 +8,7 @@ RUN cd proxygen/proxygen && ./build.sh -q -t
 
 # copy run script and run it
 COPY run_endpoint.sh .
-RUN chmod +x run_endpoint.sh
+RUN sudo chmod +x run_endpoint.sh
+COPY setup.sh .
+RUN sudo chmod +x setup.sh
 ENTRYPOINT [ "./run_endpoint.sh" ]
