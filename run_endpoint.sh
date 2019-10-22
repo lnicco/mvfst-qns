@@ -1,17 +1,49 @@
 #!/bin/bash
+set -x
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
 # Set up the routing needed for the simulation
 /setup.sh
 
-ROLE=$1
-shift
+PORT=443
 
-if [ "$ROLE" == "client" ]; then
+LOGLEVEL=0
+
+if [ ! -z "${TESTCASE}" ]; then
+    case "${TESTCASE}" in
+        "handshake"|"transfer"|"retry"|"throughput") ;;
+        "resumption"|"http3") ;;
+        *) exit 127 ;;
+    esac
+fi
+
+mkdir -p /logs/client
+mkdir -p /logs/server
+
+if [ "${ROLE}" == "client" ]; then
+    sleep 10
     echo "Starting QUIC client..."
-    ${HQ_CLI} --mode=client --host=server --use_draft=true --draft_version=22 --protocol=h3-22 --port=4433 --path=$(yes '/10000000' | head -n 10 | paste -sd',') --conn_flow_control=1048576 --stream_flow_control=256000 "$@"
+    if [ ! -z "${REQUESTS}" ]; then
+        FILES=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }' | paste -sd',')
+        echo "requesting files '${FILES}'"
+        ${HQ_CLI} \
+            --mode=client \
+            --host=server \
+            --port=${PORT} \
+            --path="${FILES}" \
+            --conn_flow_control=107374182 \
+            --stream_flow_control=107374182 \
+            --outdir=/downloads \
+            --logdir=/logs/client \
+            --v=${LOGLEVEL}
+    fi
 
 elif [ "$ROLE" == "server" ]; then
-    echo "Running QUIC server on 0.0.0.0:4433"
-    mkdir /logs
-    ${HQ_CLI} --mode=server --port=4433 --h2port=4434 --use_draft=true --draft-version=22 --logdir=/logs --host=0.0.0.0 --v=0 "$@"
+    echo "Running QUIC server on 0.0.0.0:${PORT}"
+    ${HQ_CLI} \
+        --mode=server \
+        --port=${PORT} \
+        --h2port=${PORT} \
+        --logdir=/logs/server \
+        --host=server \
+        --v=${LOGLEVEL}
 fi
