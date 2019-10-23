@@ -1,3 +1,4 @@
+            "root@client: /" 00:06 23-Oct-19
 #!/bin/bash
 
 # Extra debugging ?
@@ -6,13 +7,14 @@ set -x
 DRAFT=23
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
 PORT=443
-LOGLEVEL=2
+LOGLEVEL=4
 
 # Set up the routing needed for the simulation
 /setup.sh
 
 # Unless noted otherwise, test cases use HTTP/0.9 for file transfers.
 PROTOCOL="hq-${DRAFT}"
+HTTPVERSION="0.9"
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
         "handshake") ;;
@@ -24,6 +26,7 @@ if [ ! -z "${TESTCASE}" ]; then
         "resumption") ;;
         "http3")
              PROTOCOL="h3-${DRAFT}"
+             HTTPVERSION="1.1"
              ;;
         *)
             exit 127
@@ -43,6 +46,7 @@ if [ "${ROLE}" == "client" ]; then
             --host=server \
             --port=${PORT} \
             --protocol=${PROTOCOL} \
+            --httpversion=${HTTPVERSION} \
             --use_draft=true \
             --draft-version=${DRAFT} \
             --path="${FILES}" \
@@ -62,8 +66,8 @@ elif [ "$ROLE" == "server" ]; then
     ${HQ_CLI} \
         --mode=server \
         --port=${PORT} \
+        --httpversion=${HTTPVERSION} \
         --h2port=${PORT} \
-        --protocol=${PROTOCOL} \
         --static_root=/www \
         --use_draft=true \
         --draft-version=${DRAFT} \
