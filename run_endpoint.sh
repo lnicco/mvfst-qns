@@ -1,4 +1,3 @@
-            "root@client: /" 00:06 23-Oct-19
 #!/bin/bash
 
 # Extra debugging ?
