@@ -2,6 +2,7 @@
 
 # Extra debugging ?
 set -x
+set -o nounset
 
 DRAFT=23
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
