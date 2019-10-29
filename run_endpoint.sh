@@ -82,5 +82,4 @@ elif [ "$ROLE" == "server" ]; then
         --logdir=/logs \
         --host=server \
         --v=${LOGLEVEL} 2>&1 | tee /logs/server.log
-    /bin/bash
 fi
