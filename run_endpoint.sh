@@ -1,3 +1,4 @@
+[qsim] 0:vi*Z 1:bash-Z
 #!/bin/bash
 
 # Extra debugging ?
@@ -7,7 +8,7 @@ set -o nounset
 DRAFT=23
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
 PORT=443
-LOGLEVEL=4
+LOGLEVEL=2
 
 # Set up the routing needed for the simulation
 /setup.sh
@@ -15,10 +16,18 @@ LOGLEVEL=4
 # Unless noted otherwise, test cases use HTTP/0.9 for file transfers.
 PROTOCOL="hq-${DRAFT}"
 HTTPVERSION="0.9"
+
+# Default enormous flow control.
+
+CONN_FLOW_CONTROL="107374182"
+STREAM_FLOW_CONTROL="107374182"
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
         "handshake") ;;
-        "transfer") ;;
+        "transfer")
+            STREAM_FLOW_CONTROL="262144"
+            CONN_FLOW_CONTROL="2621440"
+            ;;
         "retry")
             exit 127
             ;;
@@ -50,8 +59,8 @@ if [ "${ROLE}" == "client" ]; then
             --use_draft=true \
             --draft-version=${DRAFT} \
             --path="${FILES}" \
-            --conn_flow_control=107374182 \
-            --stream_flow_control=107374182 \
+            --conn_flow_control=${CONN_FLOW_CONTROL} \
+            --stream_flow_control=${STREAM_FLOW_CONTROL} \
             --outdir=/downloads \
             --logdir=/logs \
             --v=${LOGLEVEL} 2>&1 | tee /logs/client.log
@@ -74,4 +83,5 @@ elif [ "$ROLE" == "server" ]; then
         --logdir=/logs \
         --host=server \
         --v=${LOGLEVEL} 2>&1 | tee /logs/server.log
+    /bin/bash
 fi
