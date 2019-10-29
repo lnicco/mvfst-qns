@@ -1,4 +1,3 @@
-[qsim] 0:vi*Z 1:bash-Z
 #!/bin/bash
 
 # Extra debugging ?
