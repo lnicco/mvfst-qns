@@ -4,7 +4,7 @@
 set -x
 set -o nounset
 
-DRAFT=23
+DRAFT=24
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
 PORT=443
 LOGLEVEL=2
@@ -33,9 +33,9 @@ if [ ! -z "${TESTCASE}" ]; then
         "throughput") ;;
         "resumption") ;;
         "http3")
-             PROTOCOL="h3-${DRAFT}"
-             HTTPVERSION="1.1"
-             ;;
+            PROTOCOL="h3-${DRAFT}"
+            HTTPVERSION="1.1"
+            ;;
         *)
             exit 127
             ;;
@@ -74,7 +74,7 @@ elif [ "$ROLE" == "server" ]; then
     ${HQ_CLI} \
         --mode=server \
         --port=${PORT} \
-        --httpversion=${HTTPVERSION} \
+	--httpversion=${HTTPVERSION} \
         --h2port=${PORT} \
         --static_root=/www \
         --use_draft=true \

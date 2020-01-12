@@ -30,4 +30,5 @@ COPY --from=0 /proxygen/proxygen/_build/proxygen/httpserver/hq /proxygen/proxyge
 # Copy shared libs
 COPY --from=0 libs.tar /
 RUN tar xvf libs.tar
+RUN rm libs.tar
 ENTRYPOINT [ "./run_endpoint.sh" ]
