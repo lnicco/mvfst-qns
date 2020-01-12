@@ -31,4 +31,7 @@ COPY --from=0 /proxygen/proxygen/_build/proxygen/httpserver/hq /proxygen/proxyge
 COPY --from=0 libs.tar /
 RUN tar xvf libs.tar
 RUN rm libs.tar
+# Create the logs directory
+RUN mkdir /logs
+
 ENTRYPOINT [ "./run_endpoint.sh" ]
