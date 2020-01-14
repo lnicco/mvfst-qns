@@ -7,7 +7,7 @@ set -o nounset
 DRAFT=24
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
 PORT=443
-LOGLEVEL=2
+LOGLEVEL=4
 
 # Set up the routing needed for the simulation
 /setup.sh
@@ -62,6 +62,7 @@ if [ "${ROLE}" == "client" ]; then
             --stream_flow_control=${STREAM_FLOW_CONTROL} \
             --outdir=/downloads \
             --logdir=/logs \
+	    --qlogger_path=/logs \
             --v=${LOGLEVEL} 2>&1 | tee /logs/client.log
         # This is the best way to troubleshoot.
         # Just uncomment the line below, run the test, then enter containers with
@@ -80,6 +81,7 @@ elif [ "$ROLE" == "server" ]; then
         --use_draft=true \
         --draft-version=${DRAFT} \
         --logdir=/logs \
+	--qlogger_path=/logs \
         --host=server \
         --v=${LOGLEVEL} 2>&1 | tee /logs/server.log
 fi
