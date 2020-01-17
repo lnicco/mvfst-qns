@@ -30,7 +30,9 @@ if [ ! -z "${TESTCASE}" ]; then
         "retry")
             exit 127
             ;;
-        "throughput") ;;
+        "throughput")
+	    LOGLEVEL=1
+	    ;;
         "resumption") ;;
         "http3")
             PROTOCOL="h3-${DRAFT}"
