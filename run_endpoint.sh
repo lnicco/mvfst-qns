@@ -83,5 +83,7 @@ elif [ "$ROLE" == "server" ]; then
         --logdir=/logs \
 	--qlogger_path=/logs \
         --host=server \
+        --congestion=bbr \
+        --pacing=true \
         --v=${LOGLEVEL} 2>&1 | tee /logs/server.log
 fi
