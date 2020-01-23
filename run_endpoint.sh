@@ -87,6 +87,5 @@ elif [ "$ROLE" == "server" ]; then
         --host=server \
         --congestion=bbr \
         --pacing=true \
-	--quic_batching_mode=1 \
         --v=${LOGLEVEL} 2>&1 | tee /logs/server.log
 fi
