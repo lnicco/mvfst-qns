@@ -20,6 +20,8 @@ HTTPVERSION="0.9"
 
 CONN_FLOW_CONTROL="107374182"
 STREAM_FLOW_CONTROL="107374182"
+INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }' | paste -sd',')
+EARLYDATA="false"
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
         "handshake") ;;
@@ -33,7 +35,13 @@ if [ ! -z "${TESTCASE}" ]; then
         "throughput")
 	    LOGLEVEL=1
 	    ;;
-        "resumption") ;;
+        "resumption") 
+	    INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
+	    ;;
+	"zerortt")
+	    INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
+	    EARLYDATA="true"
+	    ;;
         "http3")
             PROTOCOL="h3-${DRAFT}"
             HTTPVERSION="1.1"
@@ -49,23 +57,27 @@ if [ "${ROLE}" == "client" ]; then
     /wait-for-it.sh sim:57832 -s -t 10
     echo "Starting QUIC client..."
     if [ ! -z "${REQUESTS}" ]; then
-        FILES=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }' | paste -sd',')
-        echo "requesting files '${FILES}'"
-        ${HQ_CLI} \
-            --mode=client \
-            --host=server \
-            --port=${PORT} \
-            --protocol=${PROTOCOL} \
-            --httpversion=${HTTPVERSION} \
-            --use_draft=true \
-            --draft-version=${DRAFT} \
-            --path="${FILES}" \
-            --conn_flow_control=${CONN_FLOW_CONTROL} \
-            --stream_flow_control=${STREAM_FLOW_CONTROL} \
-            --outdir=/downloads \
-            --logdir=/logs \
-	    --qlogger_path=/logs \
-            --v=${LOGLEVEL} 2>&1 | tee /logs/client.log
+
+	for INVOCATION in ${INVOCATIONS}; do
+
+          echo "requesting files '${INVOCATION}'"
+          ${HQ_CLI} \
+              --mode=client \
+              --host=server \
+              --port=${PORT} \
+              --protocol=${PROTOCOL} \
+              --httpversion=${HTTPVERSION} \
+              --use_draft=true \
+              --draft-version=${DRAFT} \
+              --path="${INVOCATION}" \
+              --early_data=${EARLYDATA} \ 
+              --conn_flow_control=${CONN_FLOW_CONTROL} \
+              --stream_flow_control=${STREAM_FLOW_CONTROL} \
+              --outdir=/downloads \
+              --logdir=/logs \
+              --qlogger_path=/logs \
+              --v=${LOGLEVEL} 2>&1 | tee /logs/client.log
+      done
         # This is the best way to troubleshoot.
         # Just uncomment the line below, run the test, then enter containers with
         # docker exec -it [client|server|sim] /bin/bash
