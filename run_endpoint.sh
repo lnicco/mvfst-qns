@@ -57,9 +57,6 @@ if [ "${ROLE}" == "client" ]; then
     /wait-for-it.sh sim:57832 -s -t 10
     echo "Starting QUIC client..."
     if [ ! -z "${REQUESTS}" ]; then
-	
-	
-        INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }' | paste -sd',')
 
 	for INVOCATION in ${INVOCATIONS}; do
 
