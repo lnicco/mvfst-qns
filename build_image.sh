@@ -21,6 +21,6 @@ if [ -z $IMAGEHASH ]; then
 else
     sudo docker tag ${IMAGEHASH} lnicco/mvfst-qns:latest
     sudo docker push lnicco/mvfst-qns
-    sudo docker image prune
+    sudo docker image prune -f
 fi
 
