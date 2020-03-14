@@ -22,6 +22,7 @@ CONN_FLOW_CONTROL="107374182"
 STREAM_FLOW_CONTROL="107374182"
 INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }' | paste -sd',')
 EARLYDATA="false"
+PSK_FILE="" # in memory psk
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
         "handshake") ;;
@@ -33,13 +34,15 @@ if [ ! -z "${TESTCASE}" ]; then
             exit 127
             ;;
         "throughput")
-	    LOGLEVEL=1
+            LOGLEVEL=1
 	    ;;
         "resumption") 
-	    INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
+            INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
+            PSK_FILE="/psk"
 	    ;;
 	"zerortt")
 	    INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
+	    PSK_FILE="/psk"
 	    EARLYDATA="true"
 	    ;;
         "http3")
@@ -58,7 +61,7 @@ if [ "${ROLE}" == "client" ]; then
     echo "Starting QUIC client..."
     if [ ! -z "${REQUESTS}" ]; then
 
-	for INVOCATION in ${INVOCATIONS}; do
+        for INVOCATION in ${INVOCATIONS}; do
 
           echo "requesting files '${INVOCATION}'"
           ${HQ_CLI} \
