@@ -73,7 +73,7 @@ if [ "${ROLE}" == "client" ]; then
               --use_draft=true \
               --draft-version=${DRAFT} \
               --path="${INVOCATION}" \
-              --early_data=${EARLYDATA} \ 
+              --early_data=${EARLYDATA} \
               --conn_flow_control=${CONN_FLOW_CONTROL} \
               --stream_flow_control=${STREAM_FLOW_CONTROL} \
               --outdir=/downloads \
