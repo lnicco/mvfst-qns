@@ -3,8 +3,13 @@
 #
 FROM martenseemann/quic-network-simulator-endpoint:latest
 
-# Get and build proxygen with HTTP/3 support
+# 19.04 repos got moved
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+RUN apt-get update
+
 RUN apt-get --yes --fix-missing update
+
+# Get and build proxygen with HTTP/3 support
 RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf
 RUN apt-get install --yes git sudo cmake
 RUN git clone https://github.com/facebook/proxygen.git

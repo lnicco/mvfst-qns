@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Extra debugging ?
 set -x
@@ -36,13 +36,13 @@ if [ ! -z "${TESTCASE}" ]; then
         "throughput")
             LOGLEVEL=1
 	    ;;
-        "resumption") 
-            INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
+        "resumption")
+            INVOCATIONS=$(echo ${INVOCATIONS} | sed -e "s/,/ /")
             PSK_FILE="/psk"
 	    ;;
 	"zerortt")
-	    INVOCATIONS=$(echo ${REQUESTS} | tr " " "\n" | awk -F '/' '{ print "/" $4 }')
-	    PSK_FILE="/psk"
+            INVOCATIONS=$(echo ${INVOCATIONS} | sed -e "s/,/ /")
+            PSK_FILE="/psk"
 	    EARLYDATA="true"
 	    ;;
         "http3")
