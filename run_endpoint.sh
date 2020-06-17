@@ -95,8 +95,6 @@ elif [ "$ROLE" == "server" ]; then
 	--httpversion=${HTTPVERSION} \
         --h2port=${PORT} \
         --static_root=/www \
-        --use_draft=true \
-        --draft-version=${DRAFT} \
         --logdir=/logs \
 	--qlogger_path=/logs \
         --host=server \
