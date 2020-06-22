@@ -4,7 +4,7 @@
 FROM martenseemann/quic-network-simulator-endpoint:latest
 
 # 19.04 repos got moved
-RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+#RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 
 RUN apt-get --yes --fix-missing update
