@@ -12,8 +12,7 @@ RUN apt-get update
 RUN apt-get --yes --fix-missing update
 
 # Get and build proxygen with HTTP/3 support
-RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf
-RUN apt-get install --yes git sudo cmake
+RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf git sudo cmake python
 RUN git clone https://github.com/facebook/proxygen.git
 RUN cd proxygen/proxygen && ./build.sh -q -t
 # Cop
