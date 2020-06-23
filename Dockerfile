@@ -15,7 +15,6 @@ RUN apt-get --yes --fix-missing update
 RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf git sudo cmake python
 RUN git clone https://github.com/facebook/proxygen.git
 RUN cd proxygen/proxygen && ./build.sh -q -t
-# Cop
 RUN ldd /proxygen/proxygen/_build/proxygen/httpserver/hq | grep "=> /" | awk '{print $3}' > libs.txt
 RUN tar cvf libs.tar --dereference --files-from=libs.txt
 
