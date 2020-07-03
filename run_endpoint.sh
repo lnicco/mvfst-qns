@@ -7,7 +7,7 @@ set -o nounset
 DRAFT=29
 HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
 PORT=443
-LOGLEVEL=4
+LOGLEVEL=2
 
 # Set up the routing needed for the simulation
 /setup.sh
