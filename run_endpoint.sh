@@ -91,8 +91,6 @@ elif [ "$ROLE" == "server" ]; then
     echo "Running QUIC server on 0.0.0.0:${PORT}"
     ${HQ_CLI} \
         --mode=server \
-        --cert=/certs/cert.pem \
-        --key=/certs/priv.key \
         --port=${PORT} \
 	--httpversion=${HTTPVERSION} \
         --h2port=${PORT} \
