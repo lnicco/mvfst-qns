@@ -26,6 +26,7 @@ PSK_FILE="" # in memory psk
 if [ ! -z "${TESTCASE}" ]; then
     case "${TESTCASE}" in
         "handshake") ;;
+        "multiconnect") ;;
         "transfer")
             STREAM_FLOW_CONTROL="262144"
             CONN_FLOW_CONTROL="2621440"
