@@ -89,7 +89,7 @@ if [ "${ROLE}" == "client" ]; then
     fi
 
 elif [ "$ROLE" == "server" ]; then
-    echo "Running QUIC server on 0.0.0.0:${PORT}"
+    echo "Running QUIC server on [::]:${PORT}"
     ${HQ_CLI} \
         --mode=server \
 	--cert=/certs/cert.pem \
@@ -100,7 +100,7 @@ elif [ "$ROLE" == "server" ]; then
         --static_root=/www \
         --logdir=/logs \
 	--qlogger_path=/logs \
-        --host=server \
+        --host=:: \
         --congestion=bbr \
         --pacing=true \
         --v=${LOGLEVEL} 2>&1 | tee /logs/server.log
