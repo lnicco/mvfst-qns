@@ -12,7 +12,7 @@ RUN apt-get update
 RUN apt-get --yes --fix-missing update
 
 # Get and build proxygen with HTTP/3 support
-RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf git sudo cmake python3 libssl-dev m4 zlib1g-dev
+RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf git sudo cmake python3 libssl-dev m4 zlib1g-dev gcc g++
 RUN git clone https://github.com/facebook/proxygen.git
 RUN cd proxygen && ./getdeps.sh --no-tests
 RUN ldd _build/proxygen/bin/hq | grep "=> /" | awk '{print $3}' > libs.txt
