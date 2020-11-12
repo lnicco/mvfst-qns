@@ -5,7 +5,7 @@ set -x
 set -o nounset
 
 DRAFT=29
-HQ_CLI=/proxygen/proxygen/_build/proxygen/httpserver/hq
+HQ_CLI=/proxygen/_build/proxygen/bin/hq
 PORT=443
 LOGLEVEL=2
 
