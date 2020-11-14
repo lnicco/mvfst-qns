@@ -15,7 +15,7 @@ RUN apt-get --yes --fix-missing update
 RUN apt-get install --yes wget net-tools iputils-ping tcpdump ethtool iperf git sudo cmake python3 libssl-dev m4 zlib1g-dev gcc g++
 RUN git clone https://github.com/facebook/proxygen.git
 RUN cd proxygen && ./getdeps.sh --no-tests
-RUN ldd _build/proxygen/bin/hq | grep "=> /" | awk '{print $3}' > libs.txt
+RUN ldd /tmp/fbcode_builder_getdeps-ZproxygenZbuildZfbcode_builder-root/build/proxygen/proxygen/httpserver/hq | grep "=> /" | awk '{print $3}' > libs.txt
 RUN tar cvf libs.tar --dereference --files-from=libs.txt
 
 #
@@ -31,7 +31,7 @@ COPY wait-for-it.sh .
 RUN chmod +x wait-for-it.sh
 
 # Copy HQ
-COPY --from=0 /proxygen/_build/proxygen/bin/hq /proxygen/_build/proxygen/bin/hq
+COPY --from=0 /tmp/fbcode_builder_getdeps-ZproxygenZbuildZfbcode_builder-root/build/proxygen/proxygen/httpserver/hq /proxygen/_build/proxygen/bin/hq
 # Copy shared libs
 COPY --from=0 libs.tar /
 RUN tar xvf libs.tar
