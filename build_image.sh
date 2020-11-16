@@ -15,7 +15,7 @@ git clone https://github.com/lnicco/mvfst-qns.git
 cd mvfst-qns
 
 DATE=$(date +"%Y%m%d_%H%M%S")
-IMAGEHASH=$(sudo docker build . --no-cache | tee ../logs/build.${DATE} | grep "Successfully built" | cut -d " " -f 3)
+IMAGEHASH=$(sudo docker build . --no-cache --pull | tee ../logs/build.${DATE} | grep "Successfully built" | cut -d " " -f 3)
 if [ -z $IMAGEHASH ]; then
     echo "Image build failed or not necessary: check logs/build.${DATE}"
 else
