@@ -61,13 +61,16 @@ if [ "${ROLE}" == "client" ]; then
     /wait-for-it.sh sim:57832 -s -t 10
     echo "Starting QUIC client..."
     if [ ! -z "${REQUESTS}" ]; then
+        REQS=($REQUESTS)
+        REQ=${REQS[0]}
+        SERVER=$(echo $REQ | cut -d'/' -f3 | cut -d':' -f1)
 
         for INVOCATION in ${INVOCATIONS}; do
 
           echo "requesting files '${INVOCATION}'"
           ${HQ_CLI} \
               --mode=client \
-              --host=server \
+              --host=${SERVER} \
               --port=${PORT} \
               --protocol=${PROTOCOL} \
               --httpversion=${HTTPVERSION} \
