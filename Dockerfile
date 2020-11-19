@@ -22,13 +22,9 @@ RUN tar cvf libs.tar --dereference --files-from=libs.txt
 # Minimal image
 #
 FROM martenseemann/quic-network-simulator-endpoint:latest
-# copy run scripts
+# copy run script
 COPY run_endpoint.sh .
 RUN chmod +x run_endpoint.sh
-COPY setup.sh .
-RUN chmod +x setup.sh
-COPY wait-for-it.sh .
-RUN chmod +x wait-for-it.sh
 
 # Copy HQ
 COPY --from=0 /tmp/fbcode_builder_getdeps-ZproxygenZbuildZfbcode_builder-root/build/proxygen/proxygen/httpserver/hq /proxygen/_build/proxygen/bin/hq
