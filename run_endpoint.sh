@@ -4,7 +4,7 @@
 set -x
 set -o nounset
 
-DRAFT=29
+VERSION=1
 HQ_CLI=/proxygen/_build/proxygen/bin/hq
 PORT=443
 LOGLEVEL=2
@@ -13,7 +13,7 @@ LOGLEVEL=2
 /setup.sh
 
 # Unless noted otherwise, test cases use HTTP/0.9 for file transfers.
-PROTOCOL="hq-${DRAFT}"
+PROTOCOL="hq-interop"
 HTTPVERSION="0.9"
 
 # Default enormous flow control.
@@ -47,7 +47,7 @@ if [ ! -z "${TESTCASE}" ]; then
 	    EARLYDATA="true"
 	    ;;
         "http3")
-            PROTOCOL="h3-${DRAFT}"
+            PROTOCOL="h3"
             HTTPVERSION="1.1"
             ;;
         *)
@@ -74,8 +74,8 @@ if [ "${ROLE}" == "client" ]; then
               --port=${PORT} \
               --protocol=${PROTOCOL} \
               --httpversion=${HTTPVERSION} \
-              --use_draft=true \
-              --draft-version=${DRAFT} \
+              --use_version=true \
+              --quic-version=${VERSION} \
               --path="${INVOCATION}" \
               --early_data=${EARLYDATA} \
               --conn_flow_control=${CONN_FLOW_CONTROL} \
